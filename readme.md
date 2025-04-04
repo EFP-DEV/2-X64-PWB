@@ -31,6 +31,9 @@
 
 ## Leçon 1 : Configuration et bases du protocole HTTP
 
+**Support** : [Session 1](session_1.md)
+
+
 **Objectifs pédagogiques** :
 - Comprendre le rôle du serveur web (Apache)
 - Maîtriser le cycle HTTP (requête/réponse)
@@ -56,9 +59,11 @@
 - Introduction au fonctionnement du backend (requêtes HTTP)
 - Exposition de services simples via HTTP
 
+
 ---
 
 ## Leçon 2 : Intégration de base de données
+**Support** : [Session 2](session_2.md)
 
 **Objectifs pédagogiques** :
 - Comprendre la structure d’une base de données relationnelle
@@ -81,6 +86,7 @@
 - Validation des données (côté serveur)
 - Gestion des erreurs de connexion et d’exécution SQL
 
+
 **Références au référentiel** :
 - SGBD relationnel (MySQL)
 - Types de données (`int`, `varchar`, `date`, etc.)
@@ -90,6 +96,8 @@
 ---
 
 ## Leçon 3 : Déploiement et concepts avancés
+
+**Support** : [Session 3](session_3.md)
 
 **Objectifs pédagogiques** :
 - Mettre en ligne une application web
@@ -118,13 +126,3 @@
 ## Évaluation
 
 - **Modalité** : Examen final
-- **Critères** :
-  - Capacité à configurer un environnement backend (XAMPP, base de données)
-  - Compréhension du protocole HTTP et des interactions client/serveur
-  - Réalisation d’un CRUD complet en PHP/MySQL
-  - Production ou consommation d’une API simple en JSON
-  - Application des bonnes pratiques de sécurité et de validation
-
----
-
-Souhaites-tu que je te propose une **fiche d'exercice corrigée**, un **schéma visuel d'une architecture 3 tiers**, ou un **template d'examen** ?
