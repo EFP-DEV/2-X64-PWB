@@ -1,5 +1,5 @@
 # Programmation Web : Backend
-|    foo                 |                                     bar                |
+|    **foo**                 |                                     bar                |
 |------------------------|--------------------------------------------------------|
 | **Module**             | 5.8.9                                                  |
 | **Niveau**             | 2e année                                               |
@@ -13,10 +13,9 @@
 
 # Table des matières
   - [Objectifs pédagogiques](#objectifs-pédagogiques)
-  - [Plan de cours](#plan-de-cours)
-  - [Leçon 1 : Configuration et bases du protocole HTTP](#leçon-1--configuration-et-bases-du-protocole-http)
-  - [Leçon 2 : Intégration de base de données](#leçon-2--intégration-de-base-de-données)
-  - [Leçon 3 : Déploiement et concepts avancés](#leçon-3--déploiement-et-concepts-avancés)
+  - [Session 1 : Configuration et bases du protocole HTTP](#session-1--configuration-et-bases-du-protocole-http)
+  - [Session 2 : Intégration de base de données](#session-2--intégration-de-base-de-données)
+  - [Session 3 : Déploiement et concepts avancés](#session-3--déploiement-et-concepts-avancés)
   - [Évaluation](#évaluation)
 
 ## Objectifs pédagogiques
@@ -29,7 +28,7 @@
 
 ---
 
-## Leçon 1 : Configuration et bases du protocole HTTP
+## Session 1 : Configuration et bases du protocole HTTP
 
 **Support** : [Session 1](session_1.md)
 
@@ -62,7 +61,7 @@
 
 ---
 
-## Leçon 2 : Intégration de base de données
+## Session 2 : Intégration de base de données
 **Support** : [Session 2](session_2.md)
 
 **Objectifs pédagogiques** :
@@ -95,7 +94,7 @@
 
 ---
 
-## Leçon 3 : Déploiement et concepts avancés
+## Session 3 : Déploiement et concepts avancés
 
 **Support** : [Session 3](session_3.md)
 
