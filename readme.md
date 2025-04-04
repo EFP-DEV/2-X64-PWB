@@ -12,8 +12,6 @@
 | **Version**            | 2025-5.0                                               |
 
 # Table des matières
-- [Programmation Web : Backend](#programmation-web--backend)
-  - [Table des matières](#table-des-matières)
   - [Objectifs pédagogiques](#objectifs-pédagogiques)
   - [Plan de cours](#plan-de-cours)
   - [Leçon 1 : Configuration et bases du protocole HTTP](#leçon-1--configuration-et-bases-du-protocole-http)
