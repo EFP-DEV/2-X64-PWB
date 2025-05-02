@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cat Gallery</title>
+    <style>
+        /* Base font-size remains 100% (16px) */
+        html {
+            font-size: 100%;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 1.25rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+            gap: 0.9375rem;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.2);
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 1.25rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Random Cat Gallery</h1>
+    <div id="gallery" class="gallery">
+        <img src="https://cdn2.thecatapi.com/images/28o.jpg" alt="Cute cat" />
+        <img src="https://cdn2.thecatapi.com/images/382.jpg" alt="Cute cat" />
+        <img src="https://cdn2.thecatapi.com/images/7i1.jpg" alt="Cute cat" />
+        <img src="https://cdn2.thecatapi.com/images/alh.jpg" alt="Cute cat" />
+        <img src="https://cdn2.thecatapi.com/images/cap.jpg" alt="Cute cat" />
+        <img src="https://cdn2.thecatapi.com/images/d2o.jpg" alt="Cute cat" />
+        <img src="https://cdn2.thecatapi.com/images/MTU4MDQxMQ.jpg" alt="Cute cat" />
+        <img src="https://cdn2.thecatapi.com/images/MTk3MjQ2NA.jpg" alt="Cute cat" />
+        <img src="https://cdn2.thecatapi.com/images/utX9jo5EO.jpg" alt="Cute cat" />
+        <img src="https://cdn2.thecatapi.com/images/rBuGgH_Wj.jpg" alt="Cute cat" />
+    </div>
+    <div id="error" class="error"></div>
+</body>
+
+</html>
