@@ -15,4 +15,5 @@ $options = [
 $pdo = new PDO($dsn, $user, $pass, $options);
 
 $stmt = $pdo->query("SELECT * FROM postit");
-echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+echo json_encode($data);
