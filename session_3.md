@@ -5,7 +5,7 @@
 **Barème :** /20 points
 
 ### Objectif
-Créer une application web complète de gestion de tâches personnelles intégrant BDD, PHP et sécurité, puis la déployer en production.
+Créer une application web complète de gestion de tâches personnelles intégrant BDD, PHP et sécurité, puis la déployer en production, reprenant ainsi tous les cours precedents. Vous trouverez [ici une version rudimentaire de l'application postit](./postit).
 
 ### Spécifications techniques
 
