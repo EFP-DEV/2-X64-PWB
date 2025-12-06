@@ -1,15 +1,4 @@
-# Programmation Web : Backend
-|    **foo**                 |                                     bar                |
-|------------------------|--------------------------------------------------------|
-| **Module**             | 5.8.9                                                  |
-| **Niveau**             | 2e année                                               |
-| **Durée**              | 16 heures                                              |
-| **Référentiel**        | IFAPME-SFPME – UX/UI Designer                          |
-| **Pré-requis**         | Connaissances de base en HTML/CSS et JavaScript        |
-| **Public cible**       | Étudiants en UX/UI Design                              |
-| **Formateur**          | Dieleman Sammy                                         |
-| **Date de création**   | 2022                                                   |
-| **Version**            | 2025-5.0                                               |
+# Programmation Web Backend
 
 # Table des matières
   - [Objectifs pédagogiques](#objectifs-pédagogiques)
@@ -125,3 +114,9 @@
 ## Évaluation
 
 - **Modalité** : Examen final
+
+
+# Meta
+ **Créateur** : Dieleman Sammy
+ **Création** : 2022
+ **Version** : 2025-5.0

@@ -1,4 +1,3 @@
-
 # Demo Injection SQL
 
 ## 1. Création de la base de données
