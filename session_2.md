@@ -3,7 +3,7 @@
 **Thème fédérateur : gestion d’un portfolio UX/UI**
 
 
-## 🎯 Objectifs pédagogiques
+## Objectifs pédagogiques
 
 À l’issue de cette leçon, l’apprenant sera capable de :
 
