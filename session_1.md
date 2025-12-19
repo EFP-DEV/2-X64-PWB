@@ -8,16 +8,123 @@
 
 ---
 
-## Étape 1 : Installer et configurer un environnement de développement local
+## Étape 1 : Installer et configurer l’environnement local
 
-### Objectif : Préparer un environnement complet pour exécuter du PHP et gérer une base de données.
+### Objectif
 
-### Démonstration 1 : Installation de XAMPP
+Disposer d’un serveur web local fonctionnel pour exécuter du PHP.
 
-1. Télécharger **XAMPP** : [https://www.apachefriends.org](https://www.apachefriends.org)
-2. Lancer l’installation, cocher les composants **Apache**, **MySQL**, **PHP**
-3. Démarrer **Apache** et **MySQL** via le **XAMPP Control Panel**
-4. Ouvrir `http://localhost` dans le navigateur pour vérifier le bon fonctionnement
+---
+
+## Choisir son environnement selon l’OS
+
+| Système | Environnement | À utiliser                |
+| ------- | ------------- | ------------------------- |
+| Windows | **Laragon**   | ✅ Obligatoire             |
+| macOS   | **MAMP**      | ✅ Obligatoire             |
+| Linux   | LAMP          | (optionnel, hors support) |
+
+📌 **Règle importante**
+
+> Le **code PHP et HTML est identique** sur tous les OS.
+> Seuls **le dossier de travail et l’URL locale changent**.
+
+---
+
+## Installation – Windows (Laragon)
+
+### Démonstration : Laragon
+
+1. Télécharger Laragon :
+   👉 [https://laragon.org/download/](https://laragon.org/download/)
+
+2. Installer Laragon (version **Full** recommandée)
+
+3. Lancer **Laragon**
+
+   * Cliquer sur **Start All**
+   * Apache et MySQL doivent être en vert
+
+4. Tester dans le navigateur :
+
+   ```
+   http://localhost
+   ```
+
+---
+
+### Dossier de travail – Laragon
+
+```
+C:\laragon\www\
+```
+
+Créer un projet :
+
+```
+C:\laragon\www\mon_projet\
+```
+
+Accès navigateur :
+
+```
+http://localhost/mon_projet
+```
+
+---
+
+## Installation – macOS (MAMP)
+
+### Démonstration : MAMP
+
+1. Télécharger MAMP :
+   👉 [https://www.mamp.info/en/downloads/](https://www.mamp.info/en/downloads/)
+
+2. Installer MAMP (glisser dans **Applications**)
+
+3. Lancer **MAMP**
+
+   * Cliquer sur **Start Servers**
+
+4. Tester dans le navigateur :
+
+   ```
+   http://localhost:8888
+   ```
+
+---
+
+### Dossier de travail – MAMP
+
+```
+/Applications/MAMP/htdocs/
+```
+
+Créer un projet :
+
+```
+/Applications/MAMP/htdocs/mon_projet/
+```
+
+Accès navigateur :
+
+```
+http://localhost:8888/mon_projet
+```
+
+📌 **Attention MAMP**
+
+* Port Apache par défaut : **8888**
+* Ne pas oublier `:8888` dans l’URL
+
+---
+
+## Résumé rapide des chemins et URLs
+
+| OS      | Outil   | Dossier projet                         | URL                                |
+| ------- | ------- | -------------------------------------- | ---------------------------------- |
+| Windows | Laragon | `C:\laragon\www\mon_projet`            | `http://localhost/mon_projet`      |
+| macOS   | MAMP    | `/Applications/MAMP/htdocs/mon_projet` | `http://localhost:8888/mon_projet` |
 
 ---
 
