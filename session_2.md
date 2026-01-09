@@ -1,18 +1,81 @@
-# Session 2 : Intégration d’une base de données avec PHP et phpMyAdmin  
+# Session 2 : Intégration d’une base de données avec PHP et phpMyAdmin
 
-**Thème fédérateur : gestion d’un portfolio UX/UI**
+## Introduction – Du formulaire HTML à la base de données
 
+Cette séance est organisée autour d’un **mini-projet concret** :
+la création d’un **portfolio UX/UI dynamique**, capable de stocker et d’afficher des projets.
+
+Avant de parler directement de bases de données, la leçon démarre volontairement par des éléments **déjà connus des apprenants**.
+
+### 1. À quoi sert une base de données ?
+
+Discussion collective / introduction :
+
+* Pourquoi a-t-on besoin de bases de données ?
+* Que se passe-t-il quand un site contient beaucoup de contenus ?
+* Où sont stockées les données sur :
+
+  * un site vitrine ?
+  * un réseau social ?
+  * une application “cloud” ?
+
+👉 L’objectif est de comprendre qu’une base de données sert à :
+
+* stocker des informations de manière structurée
+* les retrouver, les modifier, les afficher
+* rendre un site **dynamique**
+
+---
+
+### 2. Exercice de démarrage : réfléchir aux types de données
+
+À partir d’un **exercice simple**, les apprenants listent les informations que l’on peut saisir dans un formulaire HTML :
+
+* texte court
+* texte long
+* date
+* URL
+* nombre
+* choix (catégories, outils, etc.)
+
+On identifie ensemble :
+
+* les champs `<input>`
+* les `<textarea>`
+* les différents `type` possibles (`text`, `date`, `url`, etc.)
+
+👉 Transition pédagogique clé :
+**Chaque champ de formulaire correspond à une information à stocker.**
+
+---
+
+### 3. Du formulaire vers la base de données
+
+À partir de cette réflexion :
+
+1. On imagine un **formulaire de projet UX/UI**
+2. On liste les champs nécessaires
+3. On transforme cette liste en **structure de base de données**
+4. On comprend que :
+
+   * le formulaire sert à **collecter**
+   * la base de données sert à **stocker**
+   * PHP sert à **faire le lien**
+
+👉 C’est ce chemin que la séance va suivre, étape par étape.
+
+---
 
 ## Objectifs pédagogiques
 
 À l’issue de cette leçon, l’apprenant sera capable de :
 
-- Concevoir une base de données adaptée à un **portfolio UX/UI designer**
-- Créer et gérer une table contenant **des projets design illustrés**
-- Se connecter à la base de données avec **PHP/PDO**
-- Réaliser des opérations **CRUD** en toute sécurité
-- Gérer l’**ajout d’images via des URL publiques**
-- Sécuriser les formulaires avec des validations serveur
+* Concevoir une base de données adaptée à un **portfolio UX/UI designer**
+* Créer et gérer une table contenant **des projets design illustrés**
+* Se connecter à la base de données avec **PHP/PDO**
+* Réaliser des opérations **CRUD** en toute sécurité
+* Gérer l’**ajout d’images via des URL publiques**
+* Sécuriser les formulaires avec des validations serveur
 
 ---
 
@@ -21,23 +84,24 @@
 ### 1. Thème : Portfolio de projets UX/UI
 
 Chaque projet contient :
-- Un titre
-- Une catégorie (UX, UI, Design System, etc.)
-- Les outils utilisés (Figma, Adobe XD…)
-- Une description
-- Une date de création
-- Une **image du projet** via une **URL publique**
+
+* Un titre
+* Une catégorie (UX, UI, Design System, etc.)
+* Les outils utilisés (Figma, Adobe XD…)
+* Une description
+* Une date de création
+* Une **image du projet** via une **URL publique**
 
 ### 2. Structure de la table `projets`
 
-| Champ         | Type SQL                            | Description                              |
-|---------------|-------------------------------------|------------------------------------------|
-| id            | `INT` (AUTO_INCREMENT, PRIMARY KEY) | Identifiant unique du projet             |
-| titre         | `VARCHAR(255)`                      | Titre du projet                          |
-| categorie     | `VARCHAR(100)`                      | Type de projet (UX, UI…)                 |
-| outils        | `VARCHAR(255)`                      | Outils utilisés                           |
-| description   | `TEXT`                              | Résumé du projet                          |
-| date_creation | `DATE`                              | Date du projet ou mise en ligne           |
+| Champ         | Type SQL                            | Description                                     |
+| ------------- | ----------------------------------- | ----------------------------------------------- |
+| id            | `INT` (AUTO_INCREMENT, PRIMARY KEY) | Identifiant unique du projet                    |
+| titre         | `VARCHAR(255)`                      | Titre du projet                                 |
+| categorie     | `VARCHAR(100)`                      | Type de projet (UX, UI…)                        |
+| outils        | `VARCHAR(255)`                      | Outils utilisés                                 |
+| description   | `TEXT`                              | Résumé du projet                                |
+| date_creation | `DATE`                              | Date du projet ou mise en ligne                 |
 | image_url     | `VARCHAR(500)`                      | Lien public vers une image illustrant le projet |
 
 > 💡 Tu peux héberger les images sur **Imgur**, **Cloudinary**, ou directement dans un sous-dossier local, selon ton niveau.
