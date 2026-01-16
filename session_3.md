@@ -1,11 +1,11 @@
 # Session 3: Creation et mise en production d'un gestionnaire de tâches personnel
 
 **Durée :** 4h 
-**Modalité :** Individuel  (avec guidance pour la mise en production)
+**Modalité :** Individuel  (avec guidanc)
 **Barème :** /20 points
 
 ## Objectif
-Créer une application web complète de gestion de tâches personnelles intégrant BDD, PHP et sécurité, puis la déployer en production, reprenant ainsi tous les cours precedents. Vous trouverez [ici une version rudimentaire de l'application postit](./postit).
+Créer une application web complète de gestion de tâches personnelles intégrant BDD, PHP et sécurité, reprenant ainsi tous les cours precedents. Vous trouverez [ici une version rudimentaire de l'application postit](./postit).
 
 ## Spécifications techniques
 
