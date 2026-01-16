@@ -1,292 +1,312 @@
-# Session 3 : Création d'un gestionnaire de tâches personnel
+# Session 3 : Gestionnaire de tâches
 
-**Durée :** 4h  
-**Modalité :** Individuel (avec guidance)  
-**Barème :** /20 points
+## 🔗 Lien avec la Session 2
+
+Dans la **Session 2**, vous avez créé un portfolio UX/UI avec :
+- Une base de données `ux_designer`
+- Une table `projets`
+- Des fichiers PHP (`connexion.php`, `ajouter_projet.php`, `index.php`)
+- Vous savez déjà vous connecter à une base de données
+- Vous savez déjà faire des INSERT et des SELECT
+
+**Aujourd'hui (Session 3)**, vous allez créer une **application de gestion de tâches** dans la **même base de données**, en ajoutant simplement une **nouvelle table**.
 
 ---
 
-## 1. Objectif
+## Note importante sur les noms
 
-Créer une application web complète de gestion de tâches personnelles intégrant BDD, PHP et sécurité, reprenant ainsi tous les cours précédents. Vous trouverez [ici une version rudimentaire de l'application postit](./postit).
+Vous allez **réutiliser** :
+- ✅ La même base de données : `ux_designer`
+- ✅ Le même utilisateur : `ux_designer` / `portfolio2024`
+- ✅ Votre fichier `connexion.php` existant
 
-## Note importante sur les noms dans la base de données
+Vous allez **ajouter** :
+- ➕ Une nouvelle table : `taches`
+- ➕ De nouveaux fichiers PHP dans un nouveau dossier
 
-⚠️ **ATTENTION** : Dans les spécifications du TP, la base de données s'appelle `todo_app` et la table s'appelle `taches` avec des champs précis (id, titre, description, statut, priorite, date_creation, date_echeance).
-
-**MAIS** si vous avez déjà créé une base de données avec un autre nom (par exemple `gestionnaire_taches`, `mes_taches`, ou même `postit`), **ce n'est pas grave !**
-
-### Ce qui est important :
-
-1. **Cohérence** : Utilisez toujours le même nom partout
-   - Si votre base s'appelle `mes_taches` → mettez `mes_taches` dans `connexion.php`
-   - Si votre table s'appelle `tasks` → utilisez `tasks` dans vos requêtes SQL
-
-2. **Structure** : Votre table doit avoir les mêmes **types** de champs :
-   - Un identifiant unique (peu importe si ça s'appelle `id`, `task_id`, ou `identifiant`)
-   - Un titre (peut s'appeler `titre`, `title`, `nom_tache`...)
-   - Une description (`description`, `contenu`, `details`...)
-   - Un statut (`statut`, `status`, `etat`...)
-   - Une priorité (`priorite`, `priority`, `niveau`...)
-   - Etc.
-
-### Exemple concret :
-
-**Si vos noms sont différents des spécifications :**
-
-```sql
--- Au lieu de :
-CREATE TABLE taches (...);
-
--- Vous avez peut-être créé :
-CREATE TABLE tasks (...);
--- ou
-CREATE TABLE mes_taches (...);
-```
-
-**Adaptez votre code PHP en conséquence :**
-
-```php
-// Dans connexion.php
-$dbname = 'mes_taches';  // Votre nom à vous
-
-// Dans vos requêtes
-$stmt = $pdo->query("SELECT * FROM tasks");  // Votre nom de table
-// Au lieu de
-$stmt = $pdo->query("SELECT * FROM taches");
-```
-
-### Comment vérifier vos noms actuels ?
-
-1. Ouvrir phpMyAdmin
-2. Regarder la liste des bases de données à gauche
-3. Cliquer sur votre base
-4. Voir le nom exact de votre table
-5. Cliquer sur la table → onglet "Structure" → voir les noms exacts des colonnes
-
-### Règle d'or :
-
-**Notez quelque part vos noms exacts** et utilisez-les partout de manière cohérente. L'important n'est pas le nom, mais que tout soit synchronisé entre :
-- Votre base de données réelle
-- Le fichier `connexion.php`
-- Toutes vos requêtes SQL dans PHP
+**Si votre base s'appelle autrement** (ex: `mon_portfolio`, `base_projets`...), pas de problème ! Utilisez juste le même nom partout.
 
 ---
 
 ## Étape 0 : Démarrage de l'environnement (5 min)
 
+**Rappel Session 2 :** Vous savez déjà faire ça !
+
 ### Démarrer les services
-**XAMPP :**
-- Ouvrir XAMPP Control Panel
-- Démarrer Apache et MySQL (boutons "Start")
-- Vérifier que les deux sont bien en vert
-
-**MAMP :**
-- Ouvrir MAMP
-- Cliquer sur "Start Servers"
-- Attendre que les voyants deviennent verts
-
-**Laragon :**
-- Ouvrir Laragon
-- Cliquer sur "Start All"
-- Vérifier que Apache et MySQL sont démarrés
+- Ouvrir votre outil (XAMPP/MAMP/Laragon)
+- Démarrer Apache et MySQL
+- Vérifier que tout est bien en vert
 
 ### Accéder à phpMyAdmin
-**XAMPP :** `http://localhost/phpmyadmin`
-**MAMP :** `http://localhost:8888/phpMyAdmin` (ou via le bouton dans MAMP)
-**Laragon :** `http://localhost/phpmyadmin` (ou clic droit sur Laragon → Database)
+Aller sur phpMyAdmin comme en Session 2 :
+- XAMPP : `http://localhost/phpmyadmin`
+- MAMP : `http://localhost:8888/phpMyAdmin`
+- Laragon : `http://localhost/phpmyadmin`
 
-### Ouvrir VSCode dans le bon dossier
-**XAMPP :**
-- Aller dans `C:\xampp\htdocs`
-- Créer un dossier `mon_todo`
-- Clic droit → "Ouvrir avec Code"
+### Créer un nouveau dossier de projet
+**Dans htdocs (ou www) :**
+- Créer un nouveau dossier `mon_todo`
+- **Différent** de votre dossier `portfolio_php` de la Session 2
 
-**MAMP :**
-- Aller dans `/Applications/MAMP/htdocs` (Mac) ou `C:\MAMP\htdocs` (Windows)
-- Créer un dossier `mon_todo`
-- Clic droit → "Ouvrir avec Code"
-
-**Laragon :**
-- Aller dans `C:\laragon\www`
-- Créer un dossier `mon_todo`
-- Clic droit → "Ouvrir avec Code"
+**Ouvrir avec VSCode :**
+- Clic droit sur `mon_todo` → "Ouvrir avec Code"
 
 ---
 
-## Étape 1 : Créer la base de données (10 min)
+## Étape 1 : Ajouter une nouvelle table à votre base existante (10 min)
+
+**Rappel Session 2 :** Vous aviez créé la base `ux_designer` avec la table `projets`.
+
+**Aujourd'hui :** On va **ajouter** une deuxième table `taches` dans la **même base**.
 
 ### Dans phpMyAdmin
-1. Cliquer sur "Nouvelle base de données" (à gauche)
-2. Nom : `todo_app` (ou un autre nom de votre choix - **notez-le !**)
-3. Interclassement : `utf8mb4_general_ci` (recommandé)
-4. Cliquer "Créer"
 
-### Créer la table
-1. Sélectionner votre base dans la liste à gauche
-2. Cliquer sur l'onglet **SQL** (en haut)
-3. Copier-coller le code SQL fourni dans les spécifications
-   - ⚠️ Si vous changez le nom de la table ou des champs, **notez vos noms exacts**
-4. Cliquer "Exécuter"
-5. Vérifier que la table apparaît sous votre base à gauche
+1. **Sélectionner votre base** dans la liste à gauche
+   - Cliquer sur `ux_designer` (ou le nom de votre base)
+   - Vous devriez voir votre table `projets` existante
+
+2. **Créer une nouvelle table :**
+   - Cliquer sur l'onglet **SQL** (en haut)
+   - Copier-coller ce code :
+
+```sql
+CREATE TABLE taches (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titre VARCHAR(255) NOT NULL,
+    description TEXT,
+    statut ENUM('todo', 'progress', 'done') DEFAULT 'todo',
+    priorite INT DEFAULT 0,
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_echeance DATE
+);
+```
+
+3. Cliquer "Exécuter"
+4. **Vérifier** : Vous devriez maintenant voir **2 tables** :
+   - `projets` (Session 2)
+   - `taches` (Session 3)
+
+**Différences avec la table `projets` :**
+- Pas de champ `image_url` 
+- Champ `statut` avec type `ENUM` (valeurs limitées)
+- Champ `priorite` de type `INT` (0 à 5)
+- `date_creation` automatique
 
 ### Ajouter des données de test
-1. Rester dans l'onglet SQL
-2. Utiliser des INSERT pour créer 3-4 tâches d'exemple
-   - ⚠️ Utilisez les mêmes noms de champs que dans votre CREATE TABLE
-3. Varier les statuts (todo, progress, done) et priorités (0 à 5)
-4. Cliquer "Exécuter"
-5. Aller dans l'onglet "Afficher" pour voir vos données
+
+Dans l'onglet SQL :
+
+```sql
+INSERT INTO taches (titre, description, statut, priorite, date_echeance) VALUES
+('Finir le TP de PHP', 'Compléter le gestionnaire de tâches', 'progress', 4, '2026-01-20'),
+('Réviser SQL', 'Revoir les requêtes SELECT, INSERT, UPDATE', 'todo', 3, '2026-01-18'),
+('Préparer la présentation', 'Créer les slides pour la démo', 'todo', 2, '2026-01-22');
+```
+
+Vérifier : Cliquer sur la table `taches` → onglet "Afficher" → voir vos 3 tâches.
 
 ---
 
-## Étape 2 : Fichier de connexion (10 min)
+## Étape 2 : Copier et adapter le fichier de connexion (5 min)
 
-### Dans VSCode, créer `connexion.php`
+**Rappel Session 2 :** Vous avez déjà un fichier `connexion.php` dans `portfolio_php`.
 
-Ce fichier va :
-- Définir les paramètres de connexion (host, base, user, password)
-- Créer un objet PDO pour se connecter à MySQL
-- Gérer les erreurs de connexion
+**Aujourd'hui :** On va le **copier** dans le nouveau dossier.
 
-**Paramètres selon votre environnement :**
+### Copier le fichier
 
-**XAMPP :**
-- Host : `localhost`
-- Database : **le nom exact que vous avez créé** (ex: `todo_app`)
-- User : `root`
-- Password : `''` (vide)
+**Option 1 - Copier manuellement :**
+1. Ouvrir votre dossier `portfolio_php`
+2. Copier le fichier `connexion.php`
+3. Le coller dans le dossier `mon_todo`
 
-**MAMP :**
-- Host : `localhost`
-- Database : **le nom exact que vous avez créé**
-- User : `root`
-- Password : `root`
-- Port : ajouter `;port=8889` après le host si nécessaire
+**Option 2 - Recréer dans VSCode :**
+Dans VSCode (dossier `mon_todo` ouvert), créer `connexion.php` :
 
-**Laragon :**
-- Host : `localhost`
-- Database : **le nom exact que vous avez créé**
-- User : `root`
-- Password : `''` (vide)
+```php
+<?php
+try {
+    $pdo = new PDO("mysql:host=localhost;dbname=ux_designer", "ux_designer", "portfolio2024");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    die("Erreur de connexion : " . $e->getMessage());
+}
+?>
+```
 
-Utiliser `PDO` avec gestion d'erreurs en `try/catch`.
+**Adaptez selon vos paramètres Session 2 :**
+- Même nom de base
+- Même utilisateur
+- Même mot de passe
+
+**XAMPP par défaut (si pas d'utilisateur créé) :**
+```php
+$pdo = new PDO("mysql:host=localhost;dbname=ux_designer", "root", "");
+```
+
+**MAMP par défaut :**
+```php
+$pdo = new PDO("mysql:host=localhost;dbname=ux_designer", "root", "root");
+```
+
+**Important :** C'est le **même fichier** que Session 2, car on utilise la **même base de données**.
 
 ---
 
-## Étape 3 : API JSON simple (15 min)
+## Étape 3 : API JSON (15 min)
+
+**Nouveau concept** par rapport à Session 2 : créer une **API** qui retourne du JSON.
+
+**Différence avec Session 2 :**
+- Session 2 : Affichage HTML direct
+- Session 3 : On va aussi créer une API pour avoir les données en JSON
 
 ### Créer `api.php`
 
-Ce fichier doit :
-1. Définir le header `Content-Type: application/json`
-2. Inclure la connexion
-3. Préparer une requête SELECT de base
-   - ⚠️ Utilisez le nom exact de **votre** table
-   - ⚠️ Utilisez les noms exacts de **vos** champs
-4. Gérer les filtres optionnels via `$_GET` :
-   - `?statut=todo` → filtrer par statut (ou `?status=todo` si votre champ s'appelle `status`)
-   - `?priorite=haute` → filtrer les priorités >= 4 (adaptez au nom de votre champ priorité)
-5. Exécuter la requête
-6. Récupérer les résultats avec `fetchAll()`
-7. Les convertir en JSON avec `json_encode()`
+```php
+<?php
+header('Content-Type: application/json');
+require_once 'connexion.php';
+
+$sql = "SELECT * FROM taches";
+
+// ... ici du code viendra pour filtrer
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
+$taches = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+echo json_encode($taches, JSON_PRETTY_PRINT);
+?>
+```
+
+**Explications :**
+- `header()` : Dit au navigateur que c'est du JSON
+- `SELECT * FROM taches` : Récupère les tâches (pas les projets !)
+- Filtres optionnels avec `$_GET`
+- `json_encode()` : Convertit en JSON
 
 **Tester dans le navigateur :**
-- URL de base pour toutes les tâches
-- URL avec paramètre statut
-- URL avec paramètre priorite
+- `http://localhost/mon_todo/api.php` → toutes les tâches
+- `http://localhost/mon_todo/api.php?statut=todo` → filtrer
+- `http://localhost/mon_todo/api.php?priorite=haute` → priorité >= 4
 
 ---
 
 ## Étape 4 : Page d'affichage (30 min)
 
+**Rappel Session 2 :** Vous aviez `index.php` qui affichait les projets.
+
+**Aujourd'hui :** Nouveau `index.php` qui affiche les tâches en **3 colonnes**.
+
 ### Créer `index.php`
 
-Cette page doit :
-1. Inclure la connexion
-2. Récupérer toutes les tâches de la BDD
-   - ⚠️ `SELECT * FROM votre_nom_de_table`
-3. Les regrouper dans 3 tableaux selon leur statut (todo, progress, done)
-   - ⚠️ Utilisez le nom exact de votre champ statut : `$tache['statut']` ou `$tache['status']`
-4. Afficher 3 colonnes HTML (une par statut)
-5. Pour chaque tâche, afficher :
-   - Titre → `$tache['titre']` ou `$tache['title']` selon votre champ
-   - Description → `$tache['description']` ou autre
-   - Date d'échéance → `$tache['date_echeance']` ou autre
-   - Priorité → `$tache['priorite']` ou `$tache['priority']`
-   - Indicateur visuel selon priorité (couleur, bordure...)
-   - Protéger avec `htmlspecialchars()`
-6. Ajouter des liens pour changer le statut (vers `traitement.php`)
+**Logique similaire à Session 2**, mais avec des différences :
 
-**CSS à prévoir :**
-- Layout en 3 colonnes (flexbox ou grid)
-- Styles pour les cartes de tâches
-- Code couleur pour les priorités (rouge/orange/vert)
-- Marges et espacements
+```php
+<?php
+require_once 'connexion.php';
 
-**URL de test :** `http://localhost/mon_todo/index.php` (ou `:8888` pour MAMP)
+// Récupérer toutes les tâches (comme les projets en Session 2)
+$stmt = $pdo->query("SELECT * FROM taches ORDER BY priorite DESC, date_echeance ASC");
+$taches = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// NOUVEAU : Regrouper par statut
+$groupes = [
+    'todo' => [],
+    'progress' => [],
+    'done' => []
+];
+
+foreach($taches as $tache) {
+    $groupes[$tache['statut']][] = $tache;
+}
+?>
+
+// ici HTML
+```
+
+**Différences avec Session 2 :**
+- Layout en 3 colonnes (au lieu d'une liste)
+- Groupement par statut
+- Liens pour changer de statut
+- Indicateurs de priorité (couleurs)
+- Pas d'images
+
+**Tester :** `http://localhost/mon_todo/index.php`
 
 ---
 
 ## Étape 5 : Formulaire d'ajout (25 min)
 
+**Rappel Session 2 :** Vous aviez `ajouter_projet.html` et `ajouter_projet.php`.
+
+**Aujourd'hui :** Un seul fichier `ajouter.php` qui combine formulaire ET traitement.
+
 ### Créer `ajouter.php`
 
-Ce fichier combine formulaire HTML et traitement PHP :
+**Structure similaire à Session 2**, mais dans un seul fichier :
 
-**Partie PHP (en haut) :**
-1. Vérifier si le formulaire est soumis (`$_SERVER['REQUEST_METHOD'] === 'POST'`)
-2. Récupérer les données POST
-   - ⚠️ Les noms dans `$_POST['...']` doivent correspondre aux attributs `name` de vos inputs
-3. Valider :
-   - Titre obligatoire et non vide
-   - Priorité entre 0 et 5
-   - Date au bon format (optionnel)
-4. Si erreurs : les stocker dans un tableau
-5. Si pas d'erreurs : INSERT dans la BDD avec requête préparée
-   - ⚠️ `INSERT INTO votre_table (vos_champs) VALUES (:placeholders)`
-   - Adaptez les noms de colonnes à votre structure
-6. Afficher un message de succès
+```php
+<?php
+require_once 'connexion.php';
 
-**Partie HTML (en bas) :**
-1. Afficher les erreurs si présentes
-2. Formulaire avec méthode POST :
-   - Input text pour titre (required)
-   - Textarea pour description
-   - Select pour priorité (0 à 5)
-   - Input date pour échéance
-   - Bouton submit
-   - ⚠️ Les attributs `name` des inputs doivent correspondre à vos noms de champs
-3. Lien retour vers index.php
+$erreurs = [];
+$success = false;
 
-**Sécurité :**
-- Toujours utiliser `htmlspecialchars()` pour afficher les données
-- Utiliser des requêtes préparées (`:titre`, `:description`... adaptez les noms)
-- Valider côté serveur, pas seulement côté client
+// Traitement du formulaire (comme ajouter_projet.php)
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // ici le code d'ajout 
+}
+?>
+
+// ici HTML
+
+```
+
+**Différences avec Session 2 :**
+- Formulaire ET traitement dans le même fichier
+- Pas de champ image_url
+- Champ priorité avec select (0 à 5)
+- Validation côté serveur
+- Messages d'erreur affichés
 
 ---
 
 ## Étape 6 : Traitement des actions (15 min)
 
+**Nouveau** : Fichier pour modifier le statut des tâches.
+
 ### Créer `traitement.php`
 
-Ce fichier ne contient **que du PHP** (pas d'affichage) :
+```php
+<?php
+require_once 'connexion.php';
 
-1. Inclure la connexion
-2. Récupérer l'action via `$_GET['action']`
-3. Selon l'action "changer_statut" :
-   - Récupérer l'ID de la tâche
-   - Récupérer le nouveau statut
-   - Valider que le statut est valide (todo, progress, done)
-   - Faire un UPDATE dans la BDD
-     - ⚠️ `UPDATE votre_table SET votre_champ_statut = :statut WHERE votre_champ_id = :id`
-4. Rediriger vers `index.php` avec `header('Location: ...')`
-5. Toujours terminer par `exit;` après une redirection
+$action = $_GET['action'] ?? '';
 
-**Sécurité :**
-- Convertir l'ID en entier avec `intval()`
-- Vérifier que le statut est dans la liste autorisée avec `in_array()`
-- Utiliser des requêtes préparées
+if($action === 'changer_statut') {
+    $id = intval($_GET['id'] ?? 0);
+    $nouveau = $_GET['nouveau'] ?? '';
+    
+    $statuts_valides = ['todo', 'progress', 'done'];
+    
+    if($id > 0 && in_array($nouveau, $statuts_valides)) {
+        $stmt = $pdo->prepare("UPDATE taches SET statut = :statut WHERE id = :id");
+        $stmt->execute(['statut' => $nouveau, 'id' => $id]);
+    }
+}
+
+header('Location: index.php');
+exit;
+?>
+```
+
+**Logique :**
+- Récupère l'action, l'ID et le nouveau statut
+- Valide que le statut est autorisé
+- Fait un UPDATE (comme en Session 2, mais pour le statut)
+- Redirige vers index.php
 
 ---
 
@@ -294,62 +314,57 @@ Ce fichier ne contient **que du PHP** (pas d'affichage) :
 
 ### Vérifications essentielles
 
-**1. Serveurs actifs ?**
-- Vérifier dans votre outil (XAMPP/MAMP/Laragon) que Apache et MySQL sont démarrés
+**1. Même base que Session 2 ?**
+- Dans phpMyAdmin, voir votre base `ux_designer`
+- Vérifier qu'elle contient **2 tables** : `projets` ET `taches`
 
-**2. Base de données créée ?**
-- Dans phpMyAdmin, voir votre base dans la liste de gauche
-- Cliquer dessus, voir votre table
-- Onglet "Afficher" : voir vos données de test
-- Onglet "Structure" : **noter les noms exacts de vos colonnes**
+**2. Applications séparées ?**
+- Dossier `portfolio_php` : application Session 2
+- Dossier `mon_todo` : application Session 3
+- Chacun a son propre `connexion.php` (même contenu)
 
-**3. Fichiers au bon endroit ?**
-- XAMPP : `C:\xampp\htdocs\mon_todo\`
-- MAMP : `/Applications/MAMP/htdocs/mon_todo/` ou `C:\MAMP\htdocs\mon_todo\`
-- Laragon : `C:\laragon\www\mon_todo\`
+**3. Tests à effectuer :**
+- `http://localhost/mon_todo/index.php` → voir les tâches en 3 colonnes
+- Changer le statut → la tâche change de colonne
+- `http://localhost/mon_todo/ajouter.php` → ajouter une tâche
+- `http://localhost/mon_todo/api.php` → voir du JSON
 
-**4. Noms cohérents partout ?**
-- Le nom dans `connexion.php` = le nom réel de votre base
-- Les noms de table dans vos requêtes = le nom réel de votre table
-- Les noms de colonnes dans `$row['colonne']` = les noms réels de vos colonnes
-
-**5. Tests à effectuer :**
-- Accéder à index.php → voir les tâches en 3 colonnes
-- Cliquer sur un lien de changement de statut → la tâche change de colonne
-- Aller sur ajouter.php → soumettre une nouvelle tâche
-- Accéder à api.php → voir du JSON s'afficher
-- Tester api.php avec des paramètres → voir le filtrage fonctionner
+**4. Session 2 toujours fonctionnelle ?**
+- `http://localhost/portfolio_php/index.php` → voir vos projets
+- Les deux applications utilisent la même base mais des tables différentes
 
 ---
 
-## Erreurs fréquentes et diagnostic
+## Erreurs fréquentes
 
-| Symptôme | Cause probable | Où vérifier |
-|----------|---------------|-------------|
-| "Page introuvable" | Serveur pas démarré | Panel XAMPP/MAMP/Laragon |
-| "Access denied for user" | Mauvais identifiants BDD | `connexion.php` - vérifier user/password |
-| "Unknown database" | Nom de base incorrect | `connexion.php` - vérifier que `$dbname` = nom réel |
-| "Table doesn't exist" | Nom de table incorrect | Vos requêtes SQL - vérifier le nom de table |
-| "Unknown column" | Nom de colonne incorrect | phpMyAdmin Structure - vérifier les noms exacts |
-| Page blanche | Erreur PHP non affichée | Ajouter `error_reporting(E_ALL); ini_set('display_errors', 1);` |
-| "Headers already sent" | `header()` après du HTML | Vérifier qu'il n'y a pas d'espace/echo avant `header()` |
-| Données non insérées | Erreur SQL silencieuse | Vérifier avec `PDO::ATTR_ERRMODE` en mode EXCEPTION |
-| "Undefined index" | Nom de champ incorrect | Vérifier `$row['champ']` correspond au nom réel |
+| Symptôme | Cause probable | Solution |
+|----------|---------------|----------|
+| "Table doesn't exist" | Mauvais nom de table | Vérifier que vous utilisez `taches` (pas `projets`) |
+| "Unknown column" | Mauvais nom de champ | Les tâches n'ont pas `image_url`, mais `statut` et `priorite` |
+| Projets affichés au lieu de tâches | Mauvaise requête | Vérifier `SELECT * FROM taches` (pas `projets`) |
+| Page blanche | Erreur PHP | Ajouter `error_reporting(E_ALL);` en haut |
 
 ---
 
-## Structure finale attendue
+## Structure finale
 
 ```
-/mon_todo/
-├── connexion.php       # Connexion BDD avec PDO (nom de BDD adapté)
-├── index.php           # Affichage 3 colonnes (noms de champs adaptés)
-├── ajouter.php         # Formulaire + validation (noms de champs adaptés)
-├── traitement.php      # UPDATE statut (noms de champs adaptés)
-├── api.php             # SELECT + filtres + JSON (noms adaptés)
-└── (style.css)         # CSS optionnel
+C:\xampp\htdocs\
+├── portfolio_php\          # Session 2 (toujours là)
+│   ├── connexion.php
+│   ├── index.php
+│   └── ajouter_projet.php
+│
+└── mon_todo\               # Session 3 (nouveau)
+    ├── connexion.php       # Copie de Session 2
+    ├── index.php           # Affichage 3 colonnes
+    ├── ajouter.php         # Formulaire + traitement
+    ├── traitement.php      # Changement de statut
+    └── api.php             # API JSON
 ```
 
-Chaque fichier a un rôle précis : séparation des responsabilités.
+**Base de données `ux_designer` :**
+- Table `projets` (Session 2)
+- Table `taches` (Session 3)
 
-**L'essentiel : COHÉRENCE des noms entre votre base de données réelle et votre code PHP.**
+**L'essentiel : Une base, deux tables, deux applications !**
